@@ -1,7 +1,7 @@
 # This is an example variables file.
 # Rename this file to "terraform.tfvars" and fill in your actual values.
 
-project_id     = "test-ss-361221"
+project_id     = ""
 image_name     = "debian-11-3"
 image_family   = "debian-11"
 bucket_name    = "vmdk-test"
@@ -10,3 +10,4 @@ location       = "us-central1"
 # network        = "default"
 # subnet         = "default"
 # zone           = "us-central1-a"
+
