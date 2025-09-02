@@ -1,0 +1,719 @@
+PS C:\Users\ShadiShehtou\Documents\New\telus_pilot\telus_pilot\telus_pilot\infra\network> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_external_vpn_gateway.vpn_external_gateway_ha will be created
+  + resource "google_compute_external_vpn_gateway" "vpn_external_gateway_ha" {
+      + description       = "oss-hybrid-vpc-1-vpn-external-gw"
+      + id                = (known after apply)
+      + label_fingerprint = (known after apply)
+      + name              = "oss-hybrid-vpc-1-vpn-external-gw"
+      + project           = "test-ss-361221"
+      + redundancy_type   = "TWO_IPS_REDUNDANCY"
+      + self_link         = (known after apply)
+
+      + interface {
+          + id         = 0
+          + ip_address = "139.61.80.252"
+        }
+      + interface {
+          + id         = 1
+          + ip_address = "139.61.80.253"
+        }
+    }
+
+  # google_compute_firewall.allow_iap_rdp will be created
+  + resource "google_compute_firewall" "allow_iap_rdp" {
+      + creation_timestamp = (known after apply)
+      + description        = "Allows ingress IAP RDP connections"
+      + destination_ranges = (known after apply)
+      + direction          = "INGRESS"
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "fw-oss-hybrid-vpc-1-np-1000-i-a-all-iap-rdp-tcp-3389"
+      + network            = "oss-hybrid-vpc-1-np"
+      + priority           = 1000
+      + project            = "test-ss-361221"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "35.235.240.0/20",
+        ]
+      + target_tags        = [
+          + "allow-iap-rdp",
+        ]
+
+      + allow {
+          + ports    = [
+              + "3389",
+            ]
+          + protocol = "tcp"
+        }
+
+      + log_config {
+          + metadata = "INCLUDE_ALL_METADATA"
+        }
+    }
+
+  # google_compute_firewall.allow_iap_ssh will be created
+  + resource "google_compute_firewall" "allow_iap_ssh" {
+      + creation_timestamp = (known after apply)
+      + description        = "Allows ingress IAP SSH connections"
+      + destination_ranges = (known after apply)
+      + direction          = "INGRESS"
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "fw-oss-hybrid-vpc-1-np-1000-i-a-all-iap-ssh-tcp-22"
+      + network            = "oss-hybrid-vpc-1-np"
+      + priority           = 1000
+      + project            = "test-ss-361221"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "35.235.240.0/20",
+        ]
+      + target_tags        = [
+          + "allow-iap-ssh",
+        ]
+
+      + allow {
+          + ports    = [
+              + "22",
+            ]
+          + protocol = "tcp"
+        }
+
+      + log_config {
+          + metadata = "INCLUDE_ALL_METADATA"
+        }
+    }
+
+  # google_compute_firewall.allow_pilot_ingress will be created
+  + resource "google_compute_firewall" "allow_pilot_ingress" {
+      + creation_timestamp = (known after apply)
+      + description        = "Allow Ingress traffic from all environment"
+      + destination_ranges = (known after apply)
+      + direction          = "INGRESS"
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "fw-oss-hybrid-vpc-1-np-1000-i-a-env-ingress"
+      + network            = "oss-hybrid-vpc-1-np"
+      + priority           = 1000
+      + project            = "test-ss-361221"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "10.32.0.0/28",
+        ]
+
+      + allow {
+          + ports    = []
+          + protocol = "all"
+        }
+
+      + log_config {
+          + metadata = "INCLUDE_ALL_METADATA"
+        }
+    }
+
+  # google_compute_ha_vpn_gateway.vpn_gateway_ha will be created
+  + resource "google_compute_ha_vpn_gateway" "vpn_gateway_ha" {
+      + id         = (known after apply)
+      + name       = "oss-hybrid-vpc-1-vpn-gw"
+      + network    = (known after apply)
+      + project    = "test-ss-361221"
+      + region     = "northamerica-northeast2"
+      + self_link  = (known after apply)
+      + stack_type = "IPV4_ONLY"
+    }
+
+  # google_compute_instance.oss_hybrid_vpc_1_np_test_vm_01 will be created
+  + resource "google_compute_instance" "oss_hybrid_vpc_1_np_test_vm_01" {
+      + can_ip_forward       = false
+      + cpu_platform         = (known after apply)
+      + current_status       = (known after apply)
+      + deletion_protection  = false
+      + guest_accelerator    = (known after apply)
+      + id                   = (known after apply)
+      + instance_id          = (known after apply)
+      + label_fingerprint    = (known after apply)
+      + machine_type         = "n2-standard-2"
+      + metadata_fingerprint = (known after apply)
+      + min_cpu_platform     = (known after apply)
+      + name                 = "oss_hybrid_vpc_1_np_test_vm_01"
+      + project              = (known after apply)
+      + self_link            = (known after apply)
+      + tags_fingerprint     = (known after apply)
+      + zone                 = "northamerica-northeast2-a"
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + image  = "debian-cloud/debian-11"
+              + labels = (known after apply)
+              + size   = (known after apply)
+              + type   = (known after apply)
+            }
+        }
+
+      + network_interface {
+          + internal_ipv6_prefix_length = (known after apply)
+          + ipv6_access_type            = (known after apply)
+          + ipv6_address                = (known after apply)
+          + name                        = (known after apply)
+          + network                     = (known after apply)
+          + network_ip                  = "10.32.0.10"
+          + stack_type                  = (known after apply)
+          + subnetwork                  = (known after apply)
+          + subnetwork_project          = (known after apply)
+        }
+    }
+
+  # google_compute_network.oss_hybrid_vpc will be created
+  + resource "google_compute_network" "oss_hybrid_vpc" {
+      + auto_create_subnetworks                   = false
+      + delete_default_routes_on_create           = true
+      + description                               = "VPC for the hybrid network"
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = (known after apply)
+      + name                                      = "oss-hybrid-vpc-1-np"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + project                                   = "test-ss-361221"
+      + routing_mode                              = (known after apply)
+      + self_link                                 = (known after apply)
+    }
+
+  # google_compute_router.vpn_router_ha_toro will be created
+  + resource "google_compute_router" "vpn_router_ha_toro" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "oss-toro-ha-vpn-cr-pilot-1"
+      + network            = (known after apply)
+      + project            = "test-ss-361221"
+      + region             = "northamerica-northeast2"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "CUSTOM"
+          + asn                = 65022
+          + keepalive_interval = 20
+
+          + advertised_ip_ranges {
+              + range = "10.32.0.10/32"
+            }
+          + advertised_ip_ranges {
+              + range = "10.32.0.3/32"
+            }
+          + advertised_ip_ranges {
+              + range = "10.32.0.4/32"
+            }
+        }
+    }
+
+  # google_compute_router_interface.vpn_router_interface1_toro_ha will be created
+  + resource "google_compute_router_interface" "vpn_router_interface1_toro_ha" {
+      + id                  = (known after apply)
+      + ip_range            = "169.254.22.66/30"
+      + name                = "cloud-router-toro-interface1-ha"
+      + project             = "test-ss-361221"
+      + redundant_interface = (known after apply)
+      + region              = "northamerica-northeast2"
+      + router              = "oss-toro-ha-vpn-cr-pilot-1"
+      + vpn_tunnel          = "vpn-tunnel1-ha"
+    }
+
+  # google_compute_router_interface.vpn_router_interface2_toro_ha will be created
+  + resource "google_compute_router_interface" "vpn_router_interface2_toro_ha" {
+      + id                  = (known after apply)
+      + ip_range            = "169.254.22.82/30"
+      + name                = "cloud-router-toro-interface2-ha"
+      + project             = "test-ss-361221"
+      + redundant_interface = (known after apply)
+      + region              = "northamerica-northeast2"
+      + router              = "oss-toro-ha-vpn-cr-pilot-1"
+      + vpn_tunnel          = "vpn-tunnel2-ha"
+    }
+
+  # google_compute_router_peer.vpn_router_peer1_toro_ha will be created
+  + resource "google_compute_router_peer" "vpn_router_peer1_toro_ha" {
+      + advertise_mode            = "DEFAULT"
+      + advertised_route_priority = 100
+      + enable                    = true
+      + enable_ipv6               = false
+      + id                        = (known after apply)
+      + interface                 = "cloud-router-toro-interface1-ha"
+      + ip_address                = (known after apply)
+      + ipv6_nexthop_address      = (known after apply)
+      + management_type           = (known after apply)
+      + name                      = "cloud-router-peer1-toro-ha"
+      + peer_asn                  = 64513
+      + peer_ip_address           = "169.254.22.65"
+      + peer_ipv6_nexthop_address = (known after apply)
+      + project                   = "test-ss-361221"
+      + region                    = "northamerica-northeast2"
+      + router                    = "oss-toro-ha-vpn-cr-pilot-1"
+    }
+
+  # google_compute_router_peer.vpn_router_peer2_toro_ha will be created
+  + resource "google_compute_router_peer" "vpn_router_peer2_toro_ha" {
+      + advertise_mode            = "DEFAULT"
+      + advertised_route_priority = 100
+      + enable                    = true
+      + enable_ipv6               = false
+      + id                        = (known after apply)
+      + interface                 = "cloud-router-toro-interface2-ha"
+      + ip_address                = (known after apply)
+      + ipv6_nexthop_address      = (known after apply)
+      + management_type           = (known after apply)
+      + name                      = "cloud-router-peer2-toro-ha"
+      + peer_asn                  = 64513
+      + peer_ip_address           = "169.254.22.81"
+      + peer_ipv6_nexthop_address = (known after apply)
+      + project                   = "test-ss-361221"
+      + region                    = "northamerica-northeast2"
+      + router                    = "oss-toro-ha-vpn-cr-pilot-1"
+    }
+
+  # google_compute_subnetwork.oss_hybrid_subnetwork will be created
+  + resource "google_compute_subnetwork" "oss_hybrid_subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + internal_ipv6_prefix       = (known after apply)
+      + ip_cidr_range              = "10.32.0.0/28"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "oss-hybrid-subnets-1-np"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "test-ss-361221"
+      + purpose                    = (known after apply)
+      + region                     = "northamerica-northeast2"
+      + secondary_ip_range         = (known after apply)
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+
+      + log_config {
+          + aggregation_interval = "INTERVAL_10_MIN"
+          + filter_expr          = "true"
+          + flow_sampling        = 0.5
+          + metadata             = "INCLUDE_ALL_METADATA"
+        }
+    }
+
+  # google_compute_vpn_tunnel.vpn_tunnel1_toro_ha will be created
+  + resource "google_compute_vpn_tunnel" "vpn_tunnel1_toro_ha" {
+      + creation_timestamp              = (known after apply)
+      + detailed_status                 = (known after apply)
+      + id                              = (known after apply)
+      + ike_version                     = 2
+      + local_traffic_selector          = (known after apply)
+      + name                            = "vpn-tunnel1-ha"
+      + peer_external_gateway           = (known after apply)
+      + peer_external_gateway_interface = 0
+      + peer_ip                         = (known after apply)
+      + project                         = "test-ss-361221"
+      + region                          = "northamerica-northeast2"
+      + remote_traffic_selector         = (known after apply)
+      + router                          = (known after apply)
+      + self_link                       = (known after apply)
+      + shared_secret_hash              = (known after apply)
+      + tunnel_id                       = (known after apply)
+      + vpn_gateway                     = (known after apply)
+      + vpn_gateway_interface           = 0
+        # (1 unchanged attribute hidden)
+    }
+
+  # google_compute_vpn_tunnel.vpn_tunnel2_toro_ha will be created
+  + resource "google_compute_vpn_tunnel" "vpn_tunnel2_toro_ha" {
+      + creation_timestamp              = (known after apply)
+      + detailed_status                 = (known after apply)
+      + id                              = (known after apply)
+      + ike_version                     = 2
+      + local_traffic_selector          = (known after apply)
+      + name                            = "vpn-tunnel2-ha"
+      + peer_external_gateway           = (known after apply)
+      + peer_external_gateway_interface = 1
+      + peer_ip                         = (known after apply)
+      + project                         = "test-ss-361221"
+      + region                          = "northamerica-northeast2"
+      + remote_traffic_selector         = (known after apply)
+      + router                          = (known after apply)
+      + self_link                       = (known after apply)
+      + shared_secret_hash              = (known after apply)
+      + tunnel_id                       = (known after apply)
+      + vpn_gateway                     = (known after apply)
+      + vpn_gateway_interface           = 1
+        # (1 unchanged attribute hidden)
+    }
+
+
+
+
+    *******************************************************
+
+
+    PS C:\Users\ShadiShehtou\Documents\New\telus_pilot\telus_pilot\telus_pilot\infra\network> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_external_vpn_gateway.vpn_external_gateway_ha will be created
+  + resource "google_compute_external_vpn_gateway" "vpn_external_gateway_ha" {
+      + description       = "oss-hybrid-vpc-1-vpn-external-gw"
+      + id                = (known after apply)
+      + label_fingerprint = (known after apply)
+      + name              = "oss-hybrid-vpc-1-vpn-external-gw"
+      + project           = "cto-rcoe-lab-np-366752"
+      + redundancy_type   = "TWO_IPS_REDUNDANCY"
+      + self_link         = (known after apply)
+
+      + interface {
+          + id         = 0
+            # (1 unchanged attribute hidden)
+        }
+      + interface {
+          + id         = 1
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # google_compute_firewall.allow_iap_rdp will be created
+  + resource "google_compute_firewall" "allow_iap_rdp" {
+      + creation_timestamp = (known after apply)
+      + description        = "Allows ingress IAP RDP connections"
+      + destination_ranges = (known after apply)
+      + direction          = "INGRESS"
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "fw-oss-hybrid-vpc-1-np-1000-i-a-all-iap-rdp-tcp-3389"
+      + network            = "oss-hybrid-vpc-1-np"
+      + priority           = 1000
+      + project            = "cto-rcoe-lab-np-366752"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "35.235.240.0/20",
+        ]
+      + target_tags        = [
+          + "allow-iap-rdp",
+        ]
+
+      + allow {
+          + ports    = [
+              + "3389",
+            ]
+          + protocol = "tcp"
+        }
+
+      + log_config {
+          + metadata = "INCLUDE_ALL_METADATA"
+        }
+    }
+
+  # google_compute_firewall.allow_iap_ssh will be created
+  + resource "google_compute_firewall" "allow_iap_ssh" {
+      + creation_timestamp = (known after apply)
+      + description        = "Allows ingress IAP SSH connections"
+      + destination_ranges = (known after apply)
+      + direction          = "INGRESS"
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "fw-oss-hybrid-vpc-1-np-1000-i-a-all-iap-ssh-tcp-22"
+      + network            = "oss-hybrid-vpc-1-np"
+      + priority           = 1000
+      + project            = "cto-rcoe-lab-np-366752"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "35.235.240.0/20",
+        ]
+      + target_tags        = [
+          + "allow-iap-ssh",
+        ]
+
+      + allow {
+          + ports    = [
+              + "22",
+            ]
+          + protocol = "tcp"
+        }
+
+      + log_config {
+          + metadata = "INCLUDE_ALL_METADATA"
+        }
+    }
+
+  # google_compute_firewall.allow_pilot_ingress will be created
+  + resource "google_compute_firewall" "allow_pilot_ingress" {
+      + creation_timestamp = (known after apply)
+      + description        = "Allow Ingress traffic from all environment"
+      + destination_ranges = (known after apply)
+      + direction          = "INGRESS"
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "fw-oss-hybrid-vpc-1-np-1000-i-a-env-ingress"
+      + network            = "oss-hybrid-vpc-1-np"
+      + priority           = 1000
+      + project            = "cto-rcoe-lab-np-366752"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "10.32.0.0/28",
+        ]
+
+      + allow {
+          + ports    = []
+          + protocol = "all"
+        }
+
+      + log_config {
+          + metadata = "INCLUDE_ALL_METADATA"
+        }
+    }
+
+  # google_compute_ha_vpn_gateway.vpn_gateway_ha will be created
+  + resource "google_compute_ha_vpn_gateway" "vpn_gateway_ha" {
+      + id         = (known after apply)
+      + name       = "oss-hybrid-vpc-1-vpn-gw"
+      + network    = (known after apply)
+      + project    = "cto-rcoe-lab-np-366752"
+      + region     = "northamerica-northeast2"
+      + self_link  = (known after apply)
+      + stack_type = "IPV4_ONLY"
+    }
+
+  # google_compute_instance.oss_hybrid_vpc_1_np_test_vm_01 will be created
+  + resource "google_compute_instance" "oss_hybrid_vpc_1_np_test_vm_01" {
+      + can_ip_forward       = false
+      + cpu_platform         = (known after apply)
+      + current_status       = (known after apply)
+      + deletion_protection  = false
+      + guest_accelerator    = (known after apply)
+      + id                   = (known after apply)
+      + instance_id          = (known after apply)
+      + label_fingerprint    = (known after apply)
+      + machine_type         = "n2-standard-2"
+      + metadata_fingerprint = (known after apply)
+      + min_cpu_platform     = (known after apply)
+      + name                 = "oss_hybrid_vpc_1_np_test_vm_01"
+      + project              = (known after apply)
+      + self_link            = (known after apply)
+      + tags_fingerprint     = (known after apply)
+      + zone                 = "northamerica-northeast2-a"
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + image  = "debian-cloud/debian-11"
+              + labels = (known after apply)
+              + size   = (known after apply)
+              + type   = (known after apply)
+            }
+        }
+
+      + network_interface {
+          + internal_ipv6_prefix_length = (known after apply)
+          + ipv6_access_type            = (known after apply)
+          + ipv6_address                = (known after apply)
+          + name                        = (known after apply)
+          + network                     = (known after apply)
+          + network_ip                  = "10.32.0.10"
+          + stack_type                  = (known after apply)
+          + subnetwork                  = (known after apply)
+          + subnetwork_project          = (known after apply)
+        }
+    }
+
+  # google_compute_network.oss_hybrid_vpc will be created
+  + resource "google_compute_network" "oss_hybrid_vpc" {
+      + auto_create_subnetworks                   = false
+      + delete_default_routes_on_create           = true
+      + description                               = "VPC for the hybrid network"
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = (known after apply)
+      + name                                      = "oss-hybrid-vpc-1-np"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + project                                   = "cto-rcoe-lab-np-366752"
+      + routing_mode                              = (known after apply)
+      + self_link                                 = (known after apply)
+    }
+
+  # google_compute_router.vpn_router_ha_toro will be created
+  + resource "google_compute_router" "vpn_router_ha_toro" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "oss-toro-ha-vpn-cr-pilot-1"
+      + network            = (known after apply)
+      + project            = "cto-rcoe-lab-np-366752"
+      + region             = "northamerica-northeast2"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "CUSTOM"
+          + asn                = 64513
+          + keepalive_interval = 20
+
+          + advertised_ip_ranges {
+              + range = "10.32.0.10/32"
+            }
+        }
+    }
+
+  # google_compute_router_interface.vpn_router_interface1_toro_ha will be created
+  + resource "google_compute_router_interface" "vpn_router_interface1_toro_ha" {
+      + id                  = (known after apply)
+      + ip_range            = "169.254.22.66/30"
+      + name                = "cloud-router-toro-interface1-ha"
+      + project             = "cto-rcoe-lab-np-366752"
+      + redundant_interface = (known after apply)
+      + region              = "northamerica-northeast2"
+      + router              = "oss-toro-ha-vpn-cr-pilot-1"
+      + vpn_tunnel          = "vpn-tunnel1-ha"
+    }
+
+  # google_compute_router_interface.vpn_router_interface2_toro_ha will be created
+  + resource "google_compute_router_interface" "vpn_router_interface2_toro_ha" {
+      + id                  = (known after apply)
+      + ip_range            = "169.254.22.82/30"
+      + name                = "cloud-router-toro-interface2-ha"
+      + project             = "cto-rcoe-lab-np-366752"
+      + redundant_interface = (known after apply)
+      + region              = "northamerica-northeast2"
+      + router              = "oss-toro-ha-vpn-cr-pilot-1"
+      + vpn_tunnel          = "vpn-tunnel2-ha"
+    }
+
+  # google_compute_router_peer.vpn_router_peer1_toro_ha will be created
+  + resource "google_compute_router_peer" "vpn_router_peer1_toro_ha" {
+      + advertise_mode            = "DEFAULT"
+      + advertised_route_priority = 100
+      + enable                    = true
+      + enable_ipv6               = false
+      + id                        = (known after apply)
+      + interface                 = "cloud-router-toro-interface1-ha"
+      + ip_address                = (known after apply)
+      + ipv6_nexthop_address      = (known after apply)
+      + management_type           = (known after apply)
+      + name                      = "cloud-router-peer1-toro-ha"
+      + peer_asn                  = 65022
+      + peer_ip_address           = "169.254.22.65"
+      + peer_ipv6_nexthop_address = (known after apply)
+      + project                   = "cto-rcoe-lab-np-366752"
+      + region                    = "northamerica-northeast2"
+      + router                    = "oss-toro-ha-vpn-cr-pilot-1"
+    }
+
+  # google_compute_router_peer.vpn_router_peer2_toro_ha will be created
+  + resource "google_compute_router_peer" "vpn_router_peer2_toro_ha" {
+      + advertise_mode            = "DEFAULT"
+      + advertised_route_priority = 100
+      + enable                    = true
+      + enable_ipv6               = false
+      + id                        = (known after apply)
+      + interface                 = "cloud-router-toro-interface2-ha"
+      + ip_address                = (known after apply)
+      + ipv6_nexthop_address      = (known after apply)
+      + management_type           = (known after apply)
+      + name                      = "cloud-router-peer2-toro-ha"
+      + peer_asn                  = 65022
+      + peer_ip_address           = "169.254.22.81"
+      + peer_ipv6_nexthop_address = (known after apply)
+      + project                   = "cto-rcoe-lab-np-366752"
+      + region                    = "northamerica-northeast2"
+      + router                    = "oss-toro-ha-vpn-cr-pilot-1"
+    }
+
+  # google_compute_subnetwork.oss_hybrid_subnetwork will be created
+  + resource "google_compute_subnetwork" "oss_hybrid_subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + internal_ipv6_prefix       = (known after apply)
+      + ip_cidr_range              = "10.32.0.0/28"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "oss-hybrid-subnets-1-np"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "cto-rcoe-lab-np-366752"
+      + purpose                    = (known after apply)
+      + region                     = "northamerica-northeast2"
+      + secondary_ip_range         = (known after apply)
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+
+      + log_config {
+          + aggregation_interval = "INTERVAL_10_MIN"
+          + filter_expr          = "true"
+          + flow_sampling        = 0.5
+          + metadata             = "INCLUDE_ALL_METADATA"
+        }
+    }
+
+  # google_compute_vpn_tunnel.vpn_tunnel1_toro_ha will be created
+  + resource "google_compute_vpn_tunnel" "vpn_tunnel1_toro_ha" {
+      + creation_timestamp              = (known after apply)
+      + detailed_status                 = (known after apply)
+      + id                              = (known after apply)
+      + ike_version                     = 2
+      + local_traffic_selector          = (known after apply)
+      + name                            = "vpn-tunnel1-ha"
+      + peer_external_gateway           = (known after apply)
+      + peer_external_gateway_interface = 0
+      + peer_ip                         = (known after apply)
+      + project                         = "cto-rcoe-lab-np-366752"
+      + region                          = "northamerica-northeast2"
+      + remote_traffic_selector         = (known after apply)
+      + router                          = (known after apply)
+      + self_link                       = (known after apply)
+      + shared_secret_hash              = (known after apply)
+      + tunnel_id                       = (known after apply)
+      + vpn_gateway                     = (known after apply)
+      + vpn_gateway_interface           = 0
+        # (1 unchanged attribute hidden)
+    }
+
+  # google_compute_vpn_tunnel.vpn_tunnel2_toro_ha will be created
+  + resource "google_compute_vpn_tunnel" "vpn_tunnel2_toro_ha" {
+      + creation_timestamp              = (known after apply)
+      + detailed_status                 = (known after apply)
+      + id                              = (known after apply)
+      + ike_version                     = 2
+      + local_traffic_selector          = (known after apply)
+      + name                            = "vpn-tunnel2-ha"
+      + peer_external_gateway           = (known after apply)
+      + peer_external_gateway_interface = 1
+      + peer_ip                         = (known after apply)
+      + project                         = "cto-rcoe-lab-np-366752"
+      + region                          = "northamerica-northeast2"
+      + remote_traffic_selector         = (known after apply)
+      + router                          = (known after apply)
+      + self_link                       = (known after apply)
+      + shared_secret_hash              = (known after apply)
+      + tunnel_id                       = (known after apply)
+      + vpn_gateway                     = (known after apply)
+      + vpn_gateway_interface           = 1
+        # (1 unchanged attribute hidden)
+    }
+
+Plan: 15 to add, 0 to change, 0 to destroy.
